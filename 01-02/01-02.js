@@ -98,6 +98,7 @@ function stattement(invoce, plays) {
 }
 
 function amountFor(perf, play) {
+  // 공연을 위한 금액 리턴
   // 값이 바뀌지 않는 변수는 매개변수로 전달
   let thisAmount = 0; // 변수를 초기화하는 코드
   switch (
