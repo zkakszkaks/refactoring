@@ -67,6 +67,34 @@ console.log(stattement(invoices[0], playes));
  * 공연료 청구서를 출력하는 코드
  */
 function stattement(invoce, plays) {
+  function amountFor(perf, play) {
+    // 공연을 위한 금액 리턴
+    // 값이 바뀌지 않는 변수는 매개변수로 전달
+    let thisAmount = 0; // 변수를 초기화하는 코드
+    switch (
+      play.type // 공연의 타입이 희극인지 비극인지 에따라 금액이 달라진다.
+    ) {
+      case "tragedy": // 비극이면
+        thisAmount = 40000; // 기본금액은 4만
+        if (perf.audience > 30) {
+          // 남품서서의 곽객수가 30보다크면
+          thisAmount += 1000 * (perf.audience - 30); // 기본금액에서 30명이상인 사람마다 1000을 더해준다.
+        }
+        break;
+      case "comedy": // 희극
+        thisAmount = 30000; // 희극은 기본금액은 3만이다
+        if (perf.audience > 20) {
+          // 관객수가 20이상이면
+          thisAmount += 10000 + 500 * (perf.audience - 20); // 20명 초과되는 인원마다 500을 곱하고 10000을 더한다
+        }
+        thisAmount += 300 * perf.audience; // 금액에서 관객수마다 300을 곱해서 누적한다.
+        break;
+      default:
+        throw new Error(`알 수 없는 장르: ${play.type}`); // 알수 없는 장르는 에러를 출력한다.
+    }
+    return thisAmount; // 함수 안에서 값이 바뀌는 변수 반환
+  }
+
   let totalAmount = 0; // 총 금액
   let volumeCredits = 0; // 포인트
   let result = `청구 내역 (고객명: ${invoce.customer})\n`;
@@ -95,32 +123,4 @@ function stattement(invoce, plays) {
   result += `총액: ${format(totalAmount / 100)}\n`; // 총금액 100으로 나누어 리턴
   result += `적립 포인트: ${volumeCredits}점\n`; // 적립포인터 리턴
   return result;
-}
-
-function amountFor(perf, play) {
-  // 공연을 위한 금액 리턴
-  // 값이 바뀌지 않는 변수는 매개변수로 전달
-  let thisAmount = 0; // 변수를 초기화하는 코드
-  switch (
-    play.type // 공연의 타입이 희극인지 비극인지 에따라 금액이 달라진다.
-  ) {
-    case "tragedy": // 비극이면
-      thisAmount = 40000; // 기본금액은 4만
-      if (perf.audience > 30) {
-        // 남품서서의 곽객수가 30보다크면
-        thisAmount += 1000 * (perf.audience - 30); // 기본금액에서 30명이상인 사람마다 1000을 더해준다.
-      }
-      break;
-    case "comedy": // 희극
-      thisAmount = 30000; // 희극은 기본금액은 3만이다
-      if (perf.audience > 20) {
-        // 관객수가 20이상이면
-        thisAmount += 10000 + 500 * (perf.audience - 20); // 20명 초과되는 인원마다 500을 곱하고 10000을 더한다
-      }
-      thisAmount += 300 * perf.audience; // 금액에서 관객수마다 300을 곱해서 누적한다.
-      break;
-    default:
-      throw new Error(`알 수 없는 장르: ${play.type}`); // 알수 없는 장르는 에러를 출력한다.
-  }
-  return thisAmount; // 함수 안에서 값이 바뀌는 변수 반환
 }
